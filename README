@@ -1,0 +1,4 @@
+README file
+
+this code onda.f90 is a simple wave equation solver that focuses on paralelization
+the data is two-dimensional and is distributed between an array of n*m processors
