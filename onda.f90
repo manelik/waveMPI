@@ -401,7 +401,7 @@ program onda
            end if
            !up senders
            if( rank/part_x/=part_y-1)then
-              call MPI_SEND(phi(j,l_Ny+1-ghost),2,MPI_REAL,&
+              call MPI_SEND(phi(j,l_Ny+1-k),2,MPI_REAL,&
                    rank+part_x,1,MPI_COMM_WORLD,ierr) 
            end if
            !Hang
@@ -434,7 +434,7 @@ program onda
            end if
            !up senders
            if( rank/part_x/=part_y-1)then
-              call MPI_SEND(xix(j,l_Ny+1-ghost),2,MPI_REAL,&
+              call MPI_SEND(xix(j,l_Ny+1-k),2,MPI_REAL,&
                    rank+part_x,1,MPI_COMM_WORLD,ierr) 
            end if
            !Hang
@@ -466,7 +466,7 @@ program onda
            end if
            !up senders
            if( rank/part_x/=part_y-1)then
-              call MPI_SEND(xiy(j,l_Ny+1-ghost),2,MPI_REAL,&
+              call MPI_SEND(xiy(j,l_Ny+1-k),2,MPI_REAL,&
                    rank+part_x,1,MPI_COMM_WORLD,ierr) 
            end if
            !Hang
@@ -498,7 +498,7 @@ program onda
            end if
            !up senders
            if( rank/part_x/=part_y-1)then
-              call MPI_SEND(pi(j,l_Ny+1-ghost),2,MPI_REAL,&
+              call MPI_SEND(pi(j,l_Ny+1-k),2,MPI_REAL,&
                    rank+part_x,1,MPI_COMM_WORLD,ierr) 
            end if
            !Hang
