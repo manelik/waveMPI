@@ -30,7 +30,7 @@ program onda
   real*8, allocatable, dimension(:,:) :: xiy, xiy_p, xiy_s 
   real*8, allocatable, dimension(:,:) :: pi, pi_p, pi_s 
 
-  real*8 :: vx,vy,v
+  real*8 :: vx=1.D0,vy=0.D0,v=1.D0,mass=0.D0
   real*8 :: x0,y0, sig, A
 
   root = 0
