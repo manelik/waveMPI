@@ -19,6 +19,7 @@ program axionda
 
   integer :: Nr,Nz,ghost, Nt, fout
   integer :: l_Nr,l_Nz
+
   real*8  :: dr,dz,dt,courant
 
   integer :: allocst
@@ -47,7 +48,7 @@ program axionda
 
   if(rank==root)then
 ! Params, should be read
-
+     print*, 'Waiting for input'
      read*,part_r
      read*,part_z
 
@@ -164,7 +165,7 @@ program axionda
 
   do j = 1-ghost, l_Nz+ghost 
      do i = 1-ghost, l_Nr+ghost
-        r(i,j)= MOD(rank,part_r)*l_Nr*dr + dr*i-1 +dr*.5D0
+        r(i,j)= MOD(rank,part_r)*l_Nr*dr + dr*(i-1 +.5D0)
         z(i,j)= (rank/part_r)*l_Nz*dz + dz*j-1
      end do
   end do
@@ -273,7 +274,7 @@ program axionda
 
      !Domain Boundaries
      ! FIXED!!!
-     if(Mod(rank,part_r)==partr-1)then
+     if(Mod(rank,part_r)==part_r-1)then
         phi(l_Nr,:)=phi_p(l_Nr,:)
         xir(l_Nr,:)=xir_p(l_Nr,:)
         xiz(l_Nr,:)=xiz_p(l_Nr,:)

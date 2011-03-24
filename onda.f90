@@ -257,6 +257,273 @@ program onda
 
      ! Nothing on boundaries
 
+     ! Periodic Boundaries
+
+     do k=1-ghost, l_Ny+ghost
+        do j=1, ghost
+     
+           if(Mod(rank,part_x)==0)then
+              
+              call MPI_IRECV(phi(1-j,k),2,MPI_REAL,&
+                   rank+part_x-1,1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !right senders
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_SEND(phi(l_Nx+1-j,k),2,MPI_REAL,&
+                   rank-part_x+1,1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if(Mod(rank,part_x)==0)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+
+           !ask for right ghostzone
+           !right recievers
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_IRECV(phi(l_Nx+j,k),2,MPI_REAL,&
+                   rank-part_x+1,1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !left senders
+           if(Mod(rank,part_x)==0)then
+              call MPI_SEND(phi(j,k),2,MPI_REAL,&
+                   rank+part_x-1,1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+
+           !XIX
+
+           if(Mod(rank,part_x)==0)then
+              call MPI_IRECV(xix(1-j,k),2,MPI_REAL,&
+                   rank+part_x-1,1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !right senders
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_SEND(xix(l_Nx+1-j,k),2,MPI_REAL,&
+                   rank-part_x+1,1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if(Mod(rank,part_x)==0)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           
+           !ask for right ghostzone
+           !right recievers
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_IRECV(xix(l_Nx+j,k),2,MPI_REAL,&
+                   rank-part_x+1,1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !left senders
+           if(Mod(rank,part_x)==0)then
+              call MPI_SEND(xix(j,k),2,MPI_REAL,&
+                   rank+part_x-1,1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+
+           !XIY
+           if(Mod(rank,part_x)==0)then
+              call MPI_IRECV(xiy(1-j,k),2,MPI_REAL,&
+                   rank+part_x-1,1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !right senders
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_SEND(xiy(l_Nx+1-j,k),2,MPI_REAL,&
+                   rank-part_x+1,1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if(Mod(rank,part_x)==0)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           
+           !ask for right ghostzone
+           !right recievers
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_IRECV(xiy(l_Nx+j,k),2,MPI_REAL,&
+                   rank-part_x+1,1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !left senders
+           if(Mod(rank,part_x)==0)then
+              call MPI_SEND(xiy(j,k),2,MPI_REAL,&
+                   rank+part_x-1,1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           
+           !Pi
+           if(Mod(rank,part_x)==0)then
+              call MPI_IRECV(pi(1-j,k),2,MPI_REAL,&
+                   rank+part_x-1,1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !right senders
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_SEND(pi(l_Nx+1-j,k),2,MPI_REAL,&
+                   rank-part_x+1,1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if(Mod(rank,part_x)==0)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           
+           !ask for right ghostzone
+           !right recievers
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_IRECV(pi(l_Nx+j,k),2,MPI_REAL,&
+                   rank-part_x+1,1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !left senders
+           if(Mod(rank,part_x)==0)then
+              call MPI_SEND(pi(j,k),2,MPI_REAL,&
+                   rank+part_x-1,1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if(Mod(rank,part_x)==part_x-1)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+
+        end do
+     end do
+
+     do k=1, ghost
+        do j=1-ghost, l_Nx+ghost
+           !ask for lower ghostzone
+           !low recievers
+           if( rank/part_x==0)then
+              call MPI_IRECV(phi(j,1-k),2,MPI_REAL,&
+                   rank+part_x*(part_y-1),1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !up senders
+           if( rank/part_x==part_y-1)then
+              call MPI_SEND(phi(j,l_Ny+1-k),2,MPI_REAL,&
+                   rank-part_x*(part_y-1),1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if( rank/part_x==0)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           
+           !ask for upper ghostzone
+           !up recievers
+           if( rank/part_x==part_y-1)then
+              call MPI_IRECV(phi(j,l_Ny+k),2,MPI_REAL,&
+                   rank-part_x*(part_y-1),1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !low senders
+           if( rank/part_x==0)then
+              call MPI_SEND(phi(j,k),2,MPI_REAL,&
+                   rank+part_x*(part_y-1),1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if( rank/part_x==part_y-1)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+
+           !Xix
+           !ask for lower ghostzone
+           !low recievers
+           if( rank/part_x==0)then
+              call MPI_IRECV(xix(j,1-k),2,MPI_REAL,&
+                   rank+part_x*(part_y-1),1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !up senders
+           if( rank/part_x==part_y-1)then
+              call MPI_SEND(xix(j,l_Ny+1-k),2,MPI_REAL,&
+                   rank-part_x*(part_y-1),1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if( rank/part_x==0)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           
+           !ask for upper ghostzone
+           !up recievers
+           if( rank/part_x==part_y-1)then
+              call MPI_IRECV(xix(j,l_Ny+k),2,MPI_REAL,&
+                   rank-part_x*(part_y-1),1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !low senders
+           if( rank/part_x==0)then
+              call MPI_SEND(xix(j,k),2,MPI_REAL,&
+                   rank+part_x*(part_y-1),1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if( rank/part_x==part_y-1)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           ! Xiy
+           !ask for lower ghostzone
+           !low recievers
+           if( rank/part_x==0)then
+              call MPI_IRECV(xiy(j,1-k),2,MPI_REAL,&
+                   rank+part_x*(part_y-1),1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !up senders
+           if( rank/part_x==part_y-1)then
+              call MPI_SEND(xiy(j,l_Ny+1-k),2,MPI_REAL,&
+                   rank-part_x*(part_y-1),1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if( rank/part_x==0)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           
+           !ask for upper ghostzone
+           !up recievers
+           if( rank/part_x==part_y-1)then
+              call MPI_IRECV(xiy(j,l_Ny+k),2,MPI_REAL,&
+                   rank-part_x*(part_y-1),1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !low senders
+           if( rank/part_x==0)then
+              call MPI_SEND(xiy(j,k),2,MPI_REAL,&
+                   rank+part_x*(part_y-1),1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if( rank/part_x==part_y-1)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           ! Pi
+           !ask for lower ghostzone
+           !low recievers
+           if( rank/part_x==0)then
+              call MPI_IRECV(pi(j,1-k),2,MPI_REAL,&
+                   rank+part_x*(part_y-1),1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !up senders
+           if( rank/part_x==part_y-1)then
+              call MPI_SEND(pi(j,l_Ny+1-k),2,MPI_REAL,&
+                   rank-part_x*(part_y-1),1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if( rank/part_x==0)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+           
+           !ask for upper ghostzone
+           !up recievers
+           if( rank/part_x==part_y-1)then
+              call MPI_IRECV(pi(j,l_Ny+k),2,MPI_REAL,&
+                   rank-part_x*(part_y-1),1,MPI_COMM_WORLD,request,ierr) 
+           end if
+           !low senders
+           if( rank/part_x==0)then
+              call MPI_SEND(pi(j,k),2,MPI_REAL,&
+                   rank+part_x*(part_y-1),1,MPI_COMM_WORLD,ierr) 
+           end if
+           !Hang
+           if( rank/part_x==part_y-1)then
+              call MPI_WAIT(request,status,ierr) 
+           end if
+        end do
+     end do
+
+
      !Sync ghostzones
 
      do k=1-ghost, l_Ny+ghost
